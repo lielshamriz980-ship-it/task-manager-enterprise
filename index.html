@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+  <html lang="he" dir="rtl">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskManager Enterprise</title>
+  <style>
+  body{font-family:Arial,sans-serif;background:#f0f2f5;margin:0;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{background:#1a73e8;color:white;padding:20px;border-radius:8px;margin-bottom:20px;text-align:center}
+.card{background:white;border-radius:8px;padding:30px;box-shadow:0 2px 10px rgba(0,0,0,0.1);margin-bottom:20px}
+input{width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;margin:8px 0;box-sizing:border-box}
+.btn{background:#1a73e8;color:white;border:none;padding:12px 24px;border-radius:4px;cursor:pointer;font-size:16px;width:100%;margin-top:10px}
+.task-item{border:1px solid #eee;padding:15px;margin:10px 0;border-radius:4px;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>TaskManager Enterprise</h1><p>Real-time Firebase Tasks</p></div>
+<div id="setup" class="card">
+<h2>Firebase Setup</h2>
+  <input id="apiKey" placeholder="API Key">
+  <input id="authDomain" placeholder="Auth Domain">
+  <input id="projectId" placeholder="Project ID">
+  <input id="storageBucket" placeholder="Storage Bucket">
+  <input id="messagingSenderId" placeholder="Messaging Sender ID">
+  <input id="appId" placeholder="App ID">
+  <button class="btn" onclick="initFB()">Connect to Firebase</button>
+</div>
+<div id="auth" class="card" style="display:none">
+  <button class="btn" onclick="login()">Sign in with Google</button>
+  </div>
+  <div id="taskapp" style="display:none">
+  <div class="card">Hello <span id="uname"></span> <button onclick="out()">Sign out</button></div>
+  <div class="card">
+  <input id="ttl" placeholder="Task title">
+  <button class="btn" onclick="add()">Add Task</button>
+  </div>
+  <div class="card" id="tasks">Loading...</div>
+  </div>
+  </div>
+  <script type="module">
+  import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut as so}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import{getFirestore,collection,addDoc,query,where,onSnapshot,deleteDoc,doc,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+let auth,db,user;
+window.initFB=()=>{
+  const app=initializeApp({apiKey:apiKey.value,authDomain:authDomain.value,projectId:projectId.value,storageBucket:storageBucket.value,messagingSenderId:messagingSenderId.value,appId:appId.value});
+auth=getAuth(app);db=getFirestore(app);
+setup.style.display='none';auth.style.display='block';
+onAuthStateChanged(auth,u=>{if(u){user=u;auth.style.display='none';taskapp.style.display='block';uname.textContent=u.displayName;load();}});
+       };
+window.login=()=>signInWithPopup(auth,new GoogleAuthProvider());
+window.out=()=>so(auth).then(()=>location.reload());
+window.add=async()=>{if(!ttl.value)return;await addDoc(collection(db,'tasks'),{title:ttl.value,userId:user.uid,createdAt:serverTimestamp()});ttl.value='';};
+function load(){onSnapshot(query(collection(db,'tasks'),where('userId','==',user.uid)),s=>{tasks.innerHTML=s.empty?'No tasks yet':'';s.forEach(d=>{const el=document.createElement('div');el.className='task-item';el.innerHTML='<span>'+d.data().title+'</span><button onclick="del(\''+d.id+'\')">Delete</button>';tasks.appendChild(el);});});}
+window.del=id=>deleteDoc(doc(db,'tasks',id));
+</script>
+  </body>
+  </html>
