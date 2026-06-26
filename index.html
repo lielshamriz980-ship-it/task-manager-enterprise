@@ -1,220 +1,107 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaskManager Enterprise</title>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--primary:#4F46E5;--primary-dark:#3730A3;--primary-light:#818CF8;--success:#10B981;--danger:#EF4444;--bg:#F1F5F9;--card:#FFFFFF;--text:#1E293B;--text-light:#64748B;--border:#E2E8F0;--shadow:0 4px 24px rgba(79,70,229,.10);--radius:16px;--radius-sm:10px}
-body{font-family:'Heebo',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
-.navbar{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(79,70,229,.3);position:sticky;top:0;z-index:100}
-.navbar-brand{display:flex;align-items:center;gap:12px;color:white;font-size:20px;font-weight:800}
-.logo-icon{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.navbar-user{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.9);font-size:14px}
-.btn-signout{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;padding:7px 16px;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;font-size:13px;font-weight:500;transition:all .2s}
-.btn-signout:hover{background:rgba(255,255,255,.25)}
-.main{max-width:680px;margin:0 auto;padding:40px 20px 60px}
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px;margin-bottom:24px;border:1px solid var(--border);animation:fadeUp .4s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero{text-align:center;margin-bottom:32px}
-.hero-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--primary),#06B6D4);border-radius:20px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:16px;box-shadow:0 8px 24px rgba(79,70,229,.3)}
-.hero h1{font-size:26px;font-weight:800;margin-bottom:8px}
-.hero p{color:var(--text-light);font-size:15px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.form-grid .full{grid-column:1/-1}
-.field-group{display:flex;flex-direction:column;gap:6px}
-.field-group label{font-size:13px;font-weight:600;color:var(--text-light)}
-.field-group input{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Heebo',sans-serif;font-size:14px;color:var(--text);transition:border-color .2s,box-shadow .2s;background:#FAFBFF;direction:ltr}
-.field-group input:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(79,70,229,.12);background:white}
-.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
-.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white;border:none;border-radius:var(--radius-sm);font-family:'Heebo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(79,70,229,.4);display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.5)}
-.btn-google{width:100%;padding:14px;background:white;color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Heebo',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.btn-google:hover{border-color:var(--primary-light);box-shadow:0 4px 16px rgba(79,70,229,.15);transform:translateY(-1px)}
-.google-logo{width:22px;height:22px}
-.auth-hero{text-align:center;margin-bottom:28px}
-.auth-icon{width:64px;height:64px;background:linear-gradient(135deg,#10B981,#06B6D4);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;box-shadow:0 8px 24px rgba(16,185,129,.3)}
-.auth-hero h2{font-size:22px;font-weight:800;margin-bottom:8px}
-.auth-hero p{color:var(--text-light);font-size:14px}
-.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.stat-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;box-shadow:var(--shadow)}
-.stat-num{font-size:24px;font-weight:800;color:var(--primary)}
-.stat-label{font-size:12px;color:var(--text-light);margin-top:2px}
-.task-input-wrap{display:flex;gap:10px}
-.task-input-wrap input{flex:1;padding:13px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Heebo',sans-serif;font-size:15px;transition:all .2s;background:#FAFBFF}
-.task-input-wrap input:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(79,70,229,.12);background:white}
-.btn-add{padding:13px 22px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;border-radius:var(--radius-sm);font-family:'Heebo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;box-shadow:0 4px 12px rgba(79,70,229,.35)}
-.btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(79,70,229,.45)}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.section-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
-.badge{background:var(--primary);color:white;border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700}
-.task-item{background:#FAFBFF;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:all .2s;animation:fadeUp .3s ease both}
-.task-item:hover{border-color:var(--primary-light);box-shadow:0 4px 16px rgba(79,70,229,.1);transform:translateY(-1px)}
-.task-check{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;cursor:pointer;flex-shrink:0;appearance:none;-webkit-appearance:none;transition:all .2s;background:white}
-.task-check:checked{background:var(--success);border-color:var(--success)}
-.task-text{flex:1;font-size:15px;font-weight:500}
-.task-text.done{text-decoration:line-through;color:var(--text-light)}
-.task-date{font-size:12px;color:var(--text-light)}
-.btn-delete{background:none;border:none;color:#CBD5E1;cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px;transition:all .2s;line-height:1}
-.btn-delete:hover{background:#FEE2E2;color:var(--danger)}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-light)}
-.empty-icon{font-size:48px;margin-bottom:12px}
-.loader{display:flex;align-items:center;justify-content:center;gap:8px;padding:30px;color:var(--text-light)}
-.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:white;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-@media(max-width:520px){.form-grid{grid-template-columns:1fr}.navbar{padding:0 16px}.main{padding:24px 16px 60px}.card{padding:24px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskManager Enterprise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Heebo',sans-serif;background:#f0f2f5;min-height:100vh;direction:rtl}
+    nav{background:linear-gradient(135deg,#4F46E5,#7C3AED);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(79,70,229,.3);position:sticky;top:0;z-index:100}
+    nav h1{color:#fff;font-size:1.3rem;font-weight:700}
+    #navUser{display:flex;align-items:center;gap:.75rem}
+    #navUser img{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5)}
+    #navUser span{color:#fff;font-size:.9rem}
+    #btnSignOut{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);padding:.4rem 1rem;border-radius:20px;cursor:pointer;font-family:inherit;font-size:.85rem;transition:background .2s}
+    #btnSignOut:hover{background:rgba(255,255,255,.3)}
+    #screenAuth{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 70px)}
+    .auth-card{background:#fff;border-radius:20px;padding:3rem 2.5rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.1);max-width:400px;width:90%}
+    .auth-icon{font-size:4rem;margin-bottom:1rem}
+    .auth-card h2{font-size:1.8rem;font-weight:800;color:#1a1a2e;margin-bottom:.5rem}
+    .auth-card p{color:#6b7280;margin-bottom:2rem}
+    #btnSignIn{display:flex;align-items:center;justify-content:center;gap:.75rem;background:#fff;border:2px solid #e5e7eb;color:#374151;padding:1rem 2rem;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all .2s}
+    #btnSignIn:hover{background:#f9fafb;border-color:#4F46E5;box-shadow:0 4px 12px rgba(79,70,229,.15)}
+    #screenApp{padding:2rem;max-width:900px;margin:0 auto;display:none}
+    .stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+    .stat-card{background:#fff;border-radius:12px;padding:1.25rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .stat-card .num{font-size:2rem;font-weight:800;color:#4F46E5}
+    .stat-card .label{font-size:.8rem;color:#6b7280;margin-top:.25rem}
+    .add-task-box{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:2rem;display:flex;gap:1rem}
+    #taskInput{flex:1;border:2px solid #e5e7eb;border-radius:10px;padding:.75rem 1rem;font-family:inherit;font-size:1rem;transition:border-color .2s;outline:none}
+    #taskInput:focus{border-color:#4F46E5}
+    #btnAdd{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:10px;padding:.75rem 1.5rem;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+    #btnAdd:hover{opacity:.9}
+    .tasks-header{font-size:1.1rem;font-weight:700;color:#374151;margin-bottom:1rem}
+    #taskList{display:flex;flex-direction:column;gap:.75rem}
+    .task-item{background:#fff;border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .15s;animation:fadeUp .2s ease}
+    .task-item:hover{transform:translateY(-1px)}
+    .task-item.done .task-text{text-decoration:line-through;color:#9ca3af}
+    .task-check{width:22px;height:22px;border-radius:50%;border:2px solid #d1d5db;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+    .task-check.checked{background:#4F46E5;border-color:#4F46E5;color:#fff}
+    .task-text{flex:1;font-size:.95rem;color:#374151}
+    .task-del{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;opacity:.6;transition:opacity .2s}
+    .task-del:hover{opacity:1}
+    .empty-state{text-align:center;padding:4rem 2rem;color:#9ca3af}
+    .empty-state .icon{font-size:4rem;margin-bottom:1rem}
+    #toast{position:fixed;bottom:2rem;right:50%;transform:translateX(50%);background:#1a1a2e;color:#fff;padding:.75rem 1.5rem;border-radius:10px;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+    #toast.show{opacity:1}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  </style>
 </head>
 <body>
-
-<nav class="navbar" id="mainNav" style="display:none">
-  <div class="navbar-brand">
-    <div class="logo-icon">&#10003;</div>
-    TaskManager Enterprise
-  </div>
-  <div class="navbar-user">
-    <span id="navUserName"></span>
-    <button class="btn-signout" onclick="doSignOut()">&#10005; התנתק</button>
+<nav>
+  <h1>📋 TaskManager Enterprise</h1>
+  <div id="navUser" style="display:none">
+    <img id="navAvatar" src="" alt="">
+    <span id="navName"></span>
+    <button id="btnSignOut" onclick="doSignOut()">✕ התנתק</button>
   </div>
 </nav>
-
-<div class="main">
-
-  <div id="screenSetup" class="card">
-    <div class="hero">
-      <div class="hero-icon">&#128640;</div>
-      <h1>TaskManager Enterprise</h1>
-      <p>חבר את Firebase כדי להתחיל לנהל משימות בזמן אמת</p>
-    </div>
-    <div class="form-grid">
-      <div class="field-group full">
-        <label>&#128273; מפתח API</label>
-        <input id="f_apiKey" placeholder="AIzaSy..." autocomplete="off">
-      </div>
-      <div class="field-group">
-        <label>&#127760; Auth Domain</label>
-        <input id="f_authDomain" placeholder="project.firebaseapp.com">
-      </div>
-      <div class="field-group">
-        <label>&#128193; Project ID</label>
-        <input id="f_projectId" placeholder="my-project">
-      </div>
-      <div class="field-group">
-        <label>&#128452; Storage Bucket</label>
-        <input id="f_storageBucket" placeholder="project.firebasestorage.app">
-      </div>
-      <div class="field-group">
-        <label>&#128232; Sender ID</label>
-        <input id="f_messagingSenderId" placeholder="123456789">
-      </div>
-      <div class="field-group full">
-        <label>&#128260; App ID</label>
-        <input id="f_appId" placeholder="1:123:web:abc">
-      </div>
-    </div>
-    <hr class="divider">
-    <button class="btn-primary" onclick="connectFirebase()">&#128279; התחבר ל-Firebase</button>
-  </div>
-
-  <div id="screenAuth" class="card" style="display:none">
-    <div class="auth-hero">
-      <div class="auth-icon">&#128075;</div>
-      <h2>ברוך הבא!</h2>
-      <p>היכנס עם חשבון Google שלך כדי להתחיל</p>
-    </div>
-    <button class="btn-google" onclick="doGoogleSignIn()">
-      <svg class="google-logo" viewBox="0 0 24 24">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
+<div id="screenAuth">
+  <div class="auth-card">
+    <div class="auth-icon">👋</div>
+    <h2>ברוך הבא!</h2>
+    <p>היכנס עם חשבון Google שלך כדי להתחיל</p>
+    <button id="btnSignIn" onclick="doSignIn()">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       כניסה עם Google
     </button>
   </div>
-
-  <div id="screenApp" style="display:none">
-    <div class="stats-bar">
-      <div class="stat-item">
-        <div class="stat-num" id="statTotal">0</div>
-        <div class="stat-label">&#128203; סה"כ משימות</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="statDone" style="color:#10B981">0</div>
-        <div class="stat-label">&#9989; הושלמו</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="statPending" style="color:#F59E0B">0</div>
-        <div class="stat-label">&#9203; בהמתנה</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="section-title" style="margin-bottom:16px">&#10133; הוסף משימה חדשה</div>
-      <div class="task-input-wrap">
-        <input id="taskInput" placeholder="מה צריך לעשות היום?" onkeydown="if(event.key==='Enter')addTask()">
-        <button class="btn-add" onclick="addTask()">הוסף</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="section-header">
-        <div class="section-title">&#128203; המשימות שלי <span class="badge" id="taskCount">0</span></div>
-      </div>
-      <div id="taskList"><div class="loader"><div class="spinner"></div> טוען משימות...</div></div>
-    </div>
-  </div>
 </div>
-
-<div class="toast" id="toast"></div>
-
+<div id="screenApp">
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">סה"כ משימות</div></div>
+    <div class="stat-card"><div class="num" id="statDone">0</div><div class="label">הושלמו</div></div>
+    <div class="stat-card"><div class="num" id="statPending">0</div><div class="label">ממתינות</div></div>
+  </div>
+  <div class="add-task-box">
+    <input id="taskInput" placeholder="הוסף משימה חדשה..." onkeydown="if(event.key==='Enter')addTask()">
+    <button id="btnAdd" onclick="addTask()">+ הוסף</button>
+  </div>
+  <div class="tasks-header">המשימות שלי</div>
+  <div id="taskList"></div>
+</div>
+<div id="toast"></div>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import{getFirestore,collection,addDoc,query,where,onSnapshot,updateDoc,deleteDoc,doc,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-let fbAuth,fbDB,fbUser;
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
-window.connectFirebase=function(){
-  const cfg={apiKey:f_apiKey.value.trim(),authDomain:f_authDomain.value.trim(),projectId:f_projectId.value.trim(),storageBucket:f_storageBucket.value.trim(),messagingSenderId:f_messagingSenderId.value.trim(),appId:f_appId.value.trim()};
-  if(!cfg.apiKey||!cfg.projectId){toast('נא להזין לפחות API Key ו-Project ID');return;}
-  try{
-    const app=initializeApp(cfg);
-    fbAuth=getAuth(app);fbDB=getFirestore(app);
-    screenSetup.style.display='none';screenAuth.style.display='block';
-    onAuthStateChanged(fbAuth,user=>{
-      if(user){fbUser=user;screenAuth.style.display='none';screenApp.style.display='block';mainNav.style.display='flex';navUserName.textContent=user.displayName||user.email;loadTasks();}
-      else{fbUser=null;screenAuth.style.display='block';screenApp.style.display='none';mainNav.style.display='none';}
-    });
-    toast('Firebase מחובר!');
-  }catch(e){toast('שגיאה: '+e.message);}
-};
-window.doGoogleSignIn=async function(){try{await signInWithPopup(fbAuth,new GoogleAuthProvider());}catch(e){toast('שגיאת כניסה: '+e.message);}};
-window.doSignOut=async function(){await signOut(fbAuth);toast('התנתקת בהצלחה');};
-window.addTask=async function(){
-  const inp=document.getElementById('taskInput'),t=inp.value.trim();
-  if(!t){toast('נא להזין כותרת');return;}
-  await addDoc(collection(fbDB,'tasks'),{title:t,userId:fbUser.uid,completed:false,createdAt:serverTimestamp()});
-  inp.value='';toast('משימה נוספה!');
-};
-window.toggleTask=async(id,done)=>await updateDoc(doc(fbDB,'tasks',id),{completed:done});
-window.deleteTask=async function(id){await deleteDoc(doc(fbDB,'tasks',id));toast('משימה נמחקה');};
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function loadTasks(){
-  onSnapshot(query(collection(fbDB,'tasks'),where('userId','==',fbUser.uid)),snap=>{
-    const tasks=[];snap.forEach(d=>tasks.push({id:d.id,...d.data()}));
-    tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    const done=tasks.filter(t=>t.completed).length;
-    statTotal.textContent=tasks.length;statDone.textContent=done;statPending.textContent=tasks.length-done;taskCount.textContent=tasks.length;
-    const c=document.getElementById('taskList');
-    if(!tasks.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">&#128587;</div><p>אין משימות עדיין. הוסף את המשימה הראשונה!</p></div>';return;}
-    c.innerHTML=tasks.map(t=>{
-      const d=t.createdAt?new Date(t.createdAt.seconds*1000).toLocaleDateString('he-IL'):'';
-      return '<div class="task-item"><input type="checkbox" class="task-check"'+(t.completed?' checked':'')+' onchange="toggleTask(''+t.id+'',this.checked)"><span class="task-text'+(t.completed?' done':'')+'">'+esc(t.title)+'</span><span class="task-date">'+d+'</span><button class="btn-delete" onclick="deleteTask(''+t.id+'')" title="מחק">&#10005;</button></div>';
-    }).join('');
-  });
-}
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import{getFirestore,collection,addDoc,deleteDoc,doc,updateDoc,onSnapshot,query,where,orderBy}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+const firebaseConfig={apiKey:'AIzaSyBSsizUt53bkQD_Osc3oeSvvW-EJG96ZEo',authDomain:'taskmanager-enterprise.firebaseapp.com',projectId:'taskmanager-enterprise',storageBucket:'taskmanager-enterprise.firebasestorage.app',messagingSenderId:'355996684261',appId:'1:355996684261:web:0286eaa61473af6b90290c'};
+const app=initializeApp(firebaseConfig);
+const fbAuth=getAuth(app);
+const db=getFirestore(app);
+let unsubTasks=null;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+function updateStats(tasks){const done=tasks.filter(t=>t.done).length;document.getElementById('statTotal').textContent=tasks.length;document.getElementById('statDone').textContent=done;document.getElementById('statPending').textContent=tasks.length-done}
+function renderTasks(tasks){const list=document.getElementById('taskList');updateStats(tasks);if(!tasks.length){list.innerHTML='<div class="empty-state"><div class="icon">📭</div><p>אין משימות עדיין. הוסף את הראשונה!</p></div>';return}list.innerHTML=tasks.map(t=>'<div class="task-item '+(t.done?'done':'')+'" data-id="'+t.id+'"><div class="task-check '+(t.done?'checked':'')+'" onclick="toggleTask(''+t.id+'','+ !t.done+')">'+(t.done?'✓':'')+'</div><span class="task-text">'+t.text+'</span><button class="task-del" onclick="deleteTask(''+t.id+'')">🗑</button></div>').join('')}
+function loadTasks(uid){if(unsubTasks)unsubTasks();const q=query(collection(db,'tasks'),where('uid','==',uid),orderBy('createdAt','desc'));unsubTasks=onSnapshot(q,snap=>{const tasks=snap.docs.map(d=>({id:d.id,...d.data()}));renderTasks(tasks)})}
+onAuthStateChanged(fbAuth,user=>{if(user){document.getElementById('screenAuth').style.display='none';document.getElementById('screenApp').style.display='block';document.getElementById('navUser').style.display='flex';document.getElementById('navAvatar').src=user.photoURL||'';document.getElementById('navName').textContent=user.displayName||user.email;loadTasks(user.uid);showToast('שלום, '+(user.displayName||'משתמש')+'!')}else{document.getElementById('screenAuth').style.display='flex';document.getElementById('screenApp').style.display='none';document.getElementById('navUser').style.display='none';if(unsubTasks){unsubTasks();unsubTasks=null}}});
+window.doSignIn=async()=>{try{await signInWithPopup(fbAuth,new GoogleAuthProvider())}catch(e){showToast('שגיאה: '+e.message)}};
+window.doSignOut=async()=>{await signOut(fbAuth);showToast('התנתקת בהצלחה')};
+window.addTask=async()=>{const input=document.getElementById('taskInput');const text=input.value.trim();if(!text)return;const user=fbAuth.currentUser;if(!user)return;await addDoc(collection(db,'tasks'),{text,done:false,uid:user.uid,createdAt:Date.now()});input.value='';showToast('משימה נוספה!')};
+window.toggleTask=async(id,done)=>{await updateDoc(doc(db,'tasks',id),{done});showToast(done?'משימה הושלמה!':'משימה סומנה כפתוחה')};
+window.deleteTask=async(id)=>{await deleteDoc(doc(db,'tasks',id));showToast('משימה נמחקה')};
 </script>
 </body>
 </html>
