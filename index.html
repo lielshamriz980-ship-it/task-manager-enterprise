@@ -10,7 +10,7 @@
 </head>
 <body>
 <nav><h1>📋 TaskManager Enterprise</h1>
-<div id="navUser" style="display:none"><img id="navAvatar" src="" alt=""><span id="navName"></span><button id="btnSignOut">✕ התנתק</button></div>
+<div id="navUser" style="display:none"><img id="navAvatar" src="" alt=""><span id="navName"></span><button id="btnSignOut">× התנתק</button></div>
 </nav>
 <div id="screenAuth"><div class="auth-card">
 <div class="auth-icon">👋</div><h2>ברוך הבא!</h2><p>היכנס עם חשבון Google שלך כדי להתחיל</p>
@@ -25,17 +25,35 @@
 <script>(async()=>{
 const{initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
 const{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-const{getFirestore,collection,addDoc,deleteDoc,doc,updateDoc,onSnapshot,query,where,orderBy}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+const{getFirestore,collection,addDoc,deleteDoc,doc,updateDoc,onSnapshot,query,where}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
 const cfg={apiKey:'AIzaSyBSsizUt53bkQD_Osc3oeSvvW-EJG96ZEo',authDomain:'taskmanager-enterprise.firebaseapp.com',projectId:'taskmanager-enterprise',storageBucket:'taskmanager-enterprise.firebasestorage.app',messagingSenderId:'355996684261',appId:'1:355996684261:web:0286eaa61473af6b90290c'};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getFirestore(app);let unsub=null;
 const $=id=>document.getElementById(id);
 const toast=msg=>{const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)};
 const stats=tasks=>{const d=tasks.filter(t=>t.done).length;$('statTotal').textContent=tasks.length;$('statDone').textContent=d;$('statPending').textContent=tasks.length-d};
-const render=tasks=>{const L=$('taskList');stats(tasks);if(!tasks.length){L.innerHTML='<div class="empty-state"><div class="icon">\u{1F4ED}</div><p>\u{5D0}\u{5D9}\u{5DF} \u{5DE}\u{5E9}\u{5D9}\u{5DE}\u{5D5}\u{5EA} \u{5E2}\u{5D3}\u{5D9}\u{5D9}\u{5DF}</p></div>';return}L.innerHTML=tasks.map(t=>'<div class="task-item '+(t.done?'done':'')+'" ><div class="task-check '+(t.done?'checked':'')+'" data-id="'+t.id+'" data-done="'+(!t.done)+'">'+(t.done?'\u{2713}':'')+'</div><span class="task-text">'+t.text+'</span><button class="task-del" data-id="'+t.id+'">\u{1F5D1}</button></div>').join('');L.querySelectorAll('.task-check').forEach(e=>e.onclick=()=>updateDoc(doc(db,'tasks',e.dataset.id),{done:e.dataset.done==='true'}).then(()=>toast(e.dataset.done==='true'?'\u{5D4}\u{5D5}\u{5E9}\u{5DC}\u{5DE}\u{5D4}!':'\u{5E4}\u{5EA}\u{5D5}\u{5D7}\u{5D4}')));L.querySelectorAll('.task-del').forEach(e=>e.onclick=()=>deleteDoc(doc(db,'tasks',e.dataset.id)).then(()=>toast('\u{5E0}\u{5DE}\u{5D7}\u{5E7}\u{5D4}')))};
-onAuthStateChanged(auth,u=>{if(u){$('screenAuth').style.display='none';$('screenApp').style.display='block';$('navUser').style.display='flex';$('navAvatar').src=u.photoURL||'';$('navName').textContent=u.displayName||u.email;if(unsub)unsub();unsub=onSnapshot(query(collection(db,'tasks'),where('uid','==',u.uid),orderBy('createdAt','desc')),s=>render(s.docs.map(d=>({id:d.id,...d.data()}))));toast('\u{5E9}\u{5DC}\u{5D5}\u{5DD} '+u.displayName+'!')}else{$('screenAuth').style.display='flex';$('screenApp').style.display='none';$('navUser').style.display='none';if(unsub){unsub();unsub=null}}});
-$('btnSignIn').onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast('\u{5E9}\u{5D2}\u{5D9}\u{5D0}\u{5D4}: '+e.message));
-$('btnSignOut').onclick=()=>signOut(auth).then(()=>toast('\u{5D4}\u{5EA}\u{5E0}\u{5EA}\u{5E7}\u{5EA}'));
-$('btnAdd').onclick=async()=>{const i=$('taskInput'),t=i.value.trim(),u=auth.currentUser;if(!t||!u)return;await addDoc(collection(db,'tasks'),{text:t,done:false,uid:u.uid,createdAt:Date.now()});i.value='';toast('\u{5E0}\u{5D5}\u{5E1}\u{5E3}!')};
+const render=tasks=>{
+  const sorted=[...tasks].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const L=$('taskList');stats(sorted);
+  if(!sorted.length){L.innerHTML='<div class="empty-state"><div class="icon">📭</div><p>אין משימות עדיין</p></div>';return}
+  L.innerHTML=sorted.map(t=>'<div class="task-item '+(t.done?'done':'')+'" ><div class="task-check '+(t.done?'checked':'')+'" data-id="'+t.id+'" data-done="'+(!t.done)+'">'+(t.done?'✓':'')+'</div><span class="task-text">'+t.text+'</span><button class="task-del" data-id="'+t.id+'">🗑</button></div>').join('');
+  L.querySelectorAll('.task-check').forEach(e=>e.onclick=()=>updateDoc(doc(db,'tasks',e.dataset.id),{done:e.dataset.done==='true'}).then(()=>toast(e.dataset.done==='true'?'הושלמה!':'פתוחה')));
+  L.querySelectorAll('.task-del').forEach(e=>e.onclick=()=>deleteDoc(doc(db,'tasks',e.dataset.id)).then(()=>toast('נמחקה')));
+};
+onAuthStateChanged(auth,u=>{
+  if(u){
+    $('screenAuth').style.display='none';$('screenApp').style.display='block';$('navUser').style.display='flex';
+    $('navAvatar').src=u.photoURL||'';$('navName').textContent=u.displayName||u.email;
+    if(unsub)unsub();
+    unsub=onSnapshot(query(collection(db,'tasks'),where('uid','==',u.uid)),s=>render(s.docs.map(d=>({id:d.id,...d.data()}))));
+    toast('שלום '+u.displayName+'!');
+  }else{
+    $('screenAuth').style.display='flex';$('screenApp').style.display='none';$('navUser').style.display='none';
+    if(unsub){unsub();unsub=null}
+  }
+});
+$('btnSignIn').onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast('שגיאה: '+e.message));
+$('btnSignOut').onclick=()=>signOut(auth).then(()=>toast('התנתקת'));
+$('btnAdd').onclick=async()=>{const i=$('taskInput'),t=i.value.trim(),u=auth.currentUser;if(!t||!u)return;await addDoc(collection(db,'tasks'),{text:t,done:false,uid:u.uid,createdAt:Date.now()});i.value='';toast('נוסף!')};
 $('taskInput').onkeydown=e=>{if(e.key==='Enter')$('btnAdd').click()};
 })();</script>
 </body></html>
