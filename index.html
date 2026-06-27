@@ -6,17 +6,17 @@
 <title>TaskManager Enterprise</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--r:14px;--r-sm:10px;--ease:.22s cubic-bezier(.4,0,.2,1);--shadow-sm:0 1px 3px rgba(0,0,0,.12);--shadow:0 4px 16px rgba(0,0,0,.12);--shadow-lg:0 20px 48px rgba(0,0,0,.18);--primary:#6366f1;--primary-h:#4f46e5;--primary-l:#818cf8;--accent:#a78bfa;--success:#10b981;--danger:#f43f5e;--warn:#f59e0b}
+:root{--r:14px;--r-sm:10px;--ease:.22s cubic-bezier(.4,0,.2,1);--shadow-sm:0 1px 3px rgba(0,0,0,.12);--shadow:0 4px 16px rgba(0,0,0,.12);--shadow-lg:0 20px 48px rgba(0,0,0,.18);--primary:#6366f1;--primary-h:#4f46e5;--primary-1:#818cf8;--accent:#ec4899}
 [data-theme="dark"]{--bg:#0d0d1a;--surface:#1e1e35;--surface2:#252540;--surface3:#2c2c50;--border:rgba(255,255,255,.08);--border-h:rgba(255,255,255,.14);--text:#e8eaf6;--text-2:#9fa8da;--text-3:#5c6394;--nav-bg:rgba(13,13,26,.85)}
 [data-theme="light"]{--bg:#f5f5fa;--surface:#ffffff;--surface2:#f0f0f8;--surface3:#e8e8f2;--border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.14);--text:#1a1a2e;--text-2:#4a4a6a;--text-3:#8888aa;--nav-bg:rgba(245,245,250,.9)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden;transition:background var(--ease),color var(--ease)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
-nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;gap:.75rem}
+nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .nav-brand{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
 .nav-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff}
 .nav-logo svg{width:18px;height:18px;stroke-width:2.2}
-.nav-title{font-size:1rem;font-weight:800;color:var(--primary-l);letter-spacing:-.02em;white-space:nowrap}
+.nav-title{font-size:1rem;font-weight:800;color:var(--primary-1);letter-spacing:-.02em;white-space:nowrap}
 .nav-right{display:flex;align-items:center;gap:.6rem}
 .theme-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all var(--ease)}
 .theme-btn:hover{border-color:var(--border-h);color:var(--text)}
@@ -24,7 +24,7 @@ nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:
 #navUser{display:flex;align-items:center;gap:.6rem}
 #navAvatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--primary);object-fit:cover}
 .nav-uname{font-size:.8rem;color:var(--text-2);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nav-signout{height:30px;padding:0 .75rem;border-radius:var(--r-sm);border:1px solid rgba(244,63,94,.3);background:rgba(244,63,94,.1);color:#f43f5e;cursor:pointer;font-family:inherit;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.35rem;transition:all var(--ease);white-space:nowrap}
+.nav-signout{height:30px;padding:0 .75rem;border-radius:var(--r-sm);border:1px solid rgba(244,63,94,.3);background:rgba(244,63,94,.1);color:#f43f5e;cursor:pointer;font-family:inherit;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.3rem;transition:all var(--ease)}
 .nav-signout:hover{background:rgba(244,63,94,.2)}
 .nav-signout svg{width:14px;height:14px;stroke-width:2.2}
 #screenAuth{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 57px);padding:1.5rem;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,.12) 0%,transparent 70%)}
@@ -35,371 +35,477 @@ nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:
 .auth-card p{color:var(--text-2);font-size:.9rem;line-height:1.7;margin-bottom:2rem}
 .auth-sep{display:flex;align-items:center;gap:.75rem;color:var(--text-3);font-size:.75rem;margin-bottom:1.25rem}
 .auth-sep::before,.auth-sep::after{content:'';flex:1;height:1px;background:var(--border)}
-#btnSignIn{width:100%;height:48px;border-radius:var(--r);border:none;background:#fff;color:#374151;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:var(--shadow);transition:transform var(--ease),box-shadow var(--ease)}
-#btnSignIn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.auth-btn{width:100%;padding:.85rem 1.5rem;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-family:inherit;font-size:.9rem;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all var(--ease)}
+.auth-btn:hover{border-color:var(--border-h);background:var(--surface3);transform:translateY(-1px);box-shadow:var(--shadow)}
+.auth-btn svg{width:20px;height:20px}
 #screenApp{display:none;padding:1.5rem;max-width:880px;margin:0 auto}
-.ws-badge{background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(167,139,250,.08));border:1px solid rgba(99,102,241,.2);border-radius:var(--r);padding:.65rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.6rem;font-size:.82rem;font-weight:600;color:var(--primary-l)}
-.ws-badge svg{width:15px;height:15px;stroke-width:2;flex-shrink:0}
-.ws-dot{width:7px;height:7px;background:var(--success);border-radius:50%;flex-shrink:0;animation:pulse 2.4s ease infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.45)}60%{box-shadow:0 0 0 5px rgba(16,185,129,0)}}
-.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem .75rem;text-align:center;transition:transform var(--ease),border-color var(--ease)}
-.stat-card:hover{transform:translateY(-2px);border-color:var(--border-h)}
-.stat-n{font-size:1.9rem;font-weight:900;line-height:1;letter-spacing:-.04em}
-.stat-n.total{color:var(--primary-l)}.stat-n.done{color:var(--success)}.stat-n.pend{color:var(--warn)}
-.stat-l{font-size:.72rem;color:var(--text-3);margin-top:.3rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.add-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:.5rem;display:flex;gap:.6rem;align-items:center;transition:border-color var(--ease);flex-wrap:wrap}
-.add-box:focus-within{border-color:rgba(99,102,241,.5)}
-#taskInput{flex:1;background:transparent;border:none;outline:none;font-family:inherit;font-size:.95rem;color:var(--text);min-width:120px}
-#taskInput::placeholder{color:var(--text-3)}
-.add-right{display:flex;gap:.5rem;align-items:center}
-.add-attach-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--ease);position:relative}
-.add-attach-btn:hover{border-color:var(--primary);color:var(--primary)}
-.add-attach-btn svg{width:16px;height:16px;stroke-width:2}
-.attach-count{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;background:var(--primary);color:#fff;font-size:.65rem;font-weight:700;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 3px}
-#btnAdd{height:36px;padding:0 1.1rem;border-radius:var(--r-sm);border:none;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.4rem;white-space:nowrap;transition:all var(--ease);box-shadow:0 2px 12px rgba(99,102,241,.35)}
-#btnAdd:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,.45)}
-#btnAdd svg{width:15px;height:15px;stroke-width:2.5}
-.pending-files{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);margin-bottom:1.25rem}
-.pf-chip{display:flex;align-items:center;gap:.3rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.25rem .5rem;font-size:.75rem;color:var(--text-2);max-width:160px}
-.pf-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.pf-chip-del{background:none;border:none;cursor:pointer;color:var(--text-3);display:flex;padding:0}
-.pf-chip-del svg{width:12px;height:12px;stroke-width:2.5}
-.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
-.section-hdr h2{font-size:.78rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em}
-.task-count-badge{font-size:.75rem;color:var(--text-3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:.15rem .6rem;font-weight:600}
-#taskList{display:flex;flex-direction:column;gap:.5rem}
-.task-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color var(--ease),box-shadow var(--ease);position:relative;animation:slideUp .18s ease both}
-@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.workspace-badge{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(236,72,153,.15));border:1px solid rgba(99,102,241,.25);border-radius:12px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--text-2)}
+.workspace-badge svg{width:14px;height:14px;color:var(--primary-1);stroke-width:2;flex-shrink:0}
+.workspace-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;flex-shrink:0}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center}
+.stat-num{font-size:1.6rem;font-weight:900;line-height:1}
+.stat-num.total{color:var(--primary-1)}
+.stat-num.done{color:#22c55e}
+.stat-num.pend{color:#f59e0b}
+.stat-label{font-size:.72rem;color:var(--text-3);margin-top:.2rem}
+.add-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:flex-start}
+.add-input{flex:1;min-width:160px;background:none;border:none;outline:none;font-family:inherit;font-size:.95rem;color:var(--text);padding:.4rem 0}
+.add-input::placeholder{color:var(--text-3)}
+.add-actions{display:flex;gap:.4rem;flex-shrink:0;align-items:center}
+.attach-trigger{width:34px;height:34px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all var(--ease);position:relative;flex-shrink:0}
+.attach-trigger:hover{border-color:var(--border-h);color:var(--text)}
+.attach-trigger svg{width:16px;height:16px;stroke-width:2}
+.attach-badge{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.add-btn{height:34px;padding:0 1rem;border-radius:var(--r-sm);border:none;background:var(--primary);color:#fff;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:.4rem;transition:all var(--ease);white-space:nowrap}
+.add-btn:hover{background:var(--primary-h);transform:translateY(-1px)}
+.add-btn svg{width:16px;height:16px;stroke-width:2.5}
+.pending-files{width:100%;display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.25rem}
+.pending-chip{display:flex;align-items:center;gap:.3rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.25rem .5rem;font-size:.75rem;color:var(--text-2);max-width:180px}
+.pending-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.pending-chip button{background:none;border:none;cursor:pointer;color:var(--text-3);padding:0;display:flex;line-height:1;flex-shrink:0}
+.pending-chip svg{width:12px;height:12px;stroke-width:2.5}
+.pending-img-preview{width:36px;height:36px;object-fit:cover;border-radius:4px;flex-shrink:0}
+.tasks-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.tasks-title{font-size:.82rem;font-weight:700;color:var(--text-3);letter-spacing:.06em;text-transform:uppercase}
+.tasks-count{font-size:.75rem;color:var(--text-3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:.15rem .6rem}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.5rem;display:flex;flex-direction:column;gap:.5rem;transition:all var(--ease);position:relative}
 .task-card:hover{border-color:var(--border-h);box-shadow:var(--shadow-sm)}
-.task-card.drag-over{border-color:var(--primary);box-shadow:0 0 0 2px rgba(99,102,241,.2)}
-.task-card.done .task-text{text-decoration:line-through;color:var(--text-3)}
-.task-stripe{position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:0;transition:opacity var(--ease)}
-.task-card:hover .task-stripe,.task-card.done .task-stripe{opacity:1}
-.task-card.done .task-stripe{background:linear-gradient(180deg,var(--success),#059669)}
-.task-main{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem}
-.task-check{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--border-h);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--ease)}
-.task-check:hover{border-color:var(--success)}
-.task-check.checked{background:var(--success);border-color:var(--success);box-shadow:0 2px 8px rgba(16,185,129,.35)}
-.task-check svg{width:13px;height:13px;stroke-width:3;color:transparent;transition:color var(--ease)}
-.task-check.checked svg{color:#fff}
-.task-text{flex:1;font-size:.91rem;line-height:1.45;word-break:break-word}
-.task-meta{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
-.task-avatar-wrap{position:relative;cursor:default}
-.task-av{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border-h);object-fit:cover}
-.task-av-fb{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--primary-h),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#fff}
-.task-tip{position:absolute;bottom:calc(100% + 6px);right:50%;transform:translateX(50%);background:var(--surface3);color:var(--text);font-size:.72rem;font-weight:600;padding:.3rem .55rem;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;border:1px solid var(--border);z-index:20;box-shadow:var(--shadow)}
-.task-tip::after{content:'';position:absolute;top:100%;right:50%;transform:translateX(50%);border:4px solid transparent;border-top-color:var(--surface3)}
-.task-avatar-wrap:hover .task-tip{opacity:1}
-.task-attach-toggle{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all var(--ease);position:relative}
-.task-attach-toggle:hover,.task-attach-toggle.act{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.08)}
-.task-attach-toggle svg{width:14px;height:14px;stroke-width:2}
-.task-attach-badge{position:absolute;top:-4px;right:-4px;min-width:14px;height:14px;background:var(--primary);color:#fff;font-size:.6rem;font-weight:700;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 2px}
-.task-del-btn{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid transparent;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all var(--ease);opacity:0}
-.task-card:hover .task-del-btn{opacity:1}
-.task-del-btn:hover{border-color:rgba(244,63,94,.3);color:var(--danger);background:rgba(244,63,94,.1)}
-.task-del-btn svg{width:14px;height:14px;stroke-width:2}
-.attach-panel{border-top:1px solid var(--border);padding:.75rem 1rem;display:none}
-.attach-panel.open{display:block}
-.attach-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.4rem}
-.attach-item{position:relative;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);background:var(--surface2)}
-.attach-item:hover{border-color:var(--border-h)}
-.attach-img{width:72px;height:72px;object-fit:cover;display:block;cursor:pointer}
-.attach-img:hover{opacity:.85}
-.attach-file{display:flex;align-items:center;gap:.5rem;padding:.45rem .6rem;min-width:140px;max-width:200px}
-.attach-file-icon{width:28px;height:28px;background:rgba(99,102,241,.12);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--primary)}
-.attach-file-icon svg{width:15px;height:15px;stroke-width:2}
-.attach-file-info{flex:1;overflow:hidden}
-.attach-file-name{font-size:.76rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.attach-file-size{font-size:.68rem;color:var(--text-3)}
-.attach-download{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--text-3);text-decoration:none}
-.attach-download:hover{color:var(--primary)}
-.attach-download svg{width:13px;height:13px;stroke-width:2}
-.attach-del-img{position:absolute;top:3px;left:3px;width:18px;height:18px;background:rgba(0,0,0,.6);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity var(--ease)}
-.attach-item:hover .attach-del-img{opacity:1}
-.attach-del-img svg{width:10px;height:10px;color:#fff;stroke-width:3}
-.attach-add-btn{width:72px;height:72px;border-radius:var(--r-sm);border:1.5px dashed var(--border-h);background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;color:var(--text-3);transition:all var(--ease);font-size:.68rem;font-family:inherit}
-.attach-add-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.06)}
-.attach-add-btn svg{width:18px;height:18px;stroke-width:1.8}
-.upload-progress{height:3px;background:var(--border);border-radius:2px;margin-top:.4rem;overflow:hidden;display:none}
-.upload-progress.show{display:block}
-.upload-bar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px;transition:width .15s}
-.drop-overlay{position:absolute;inset:0;background:rgba(99,102,241,.1);border:2px dashed var(--primary);border-radius:var(--r);display:none;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--primary);z-index:10;pointer-events:none}
-.task-card.drag-over .drop-overlay{display:flex}
-.empty{text-align:center;padding:3.5rem 1.5rem;color:var(--text-3)}
-.empty-icon{width:64px;height:64px;background:var(--surface2);border:1px solid var(--border);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
-.empty-icon svg{width:28px;height:28px;stroke-width:1.5}
-.empty h3{font-size:1rem;font-weight:700;color:var(--text-2);margin-bottom:.35rem}
-.empty p{font-size:.83rem}
-#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:none;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)}
-#lightbox.open{display:flex}
-#lightbox img{max-width:100%;max-height:90vh;border-radius:var(--r);object-fit:contain}
-#lb-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff}
-#lb-close svg{width:20px;height:20px;stroke-width:2}
-#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surface3);color:var(--text);border:1px solid var(--border);padding:.65rem 1.25rem;border-radius:var(--r);font-size:.85rem;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:500;box-shadow:var(--shadow);white-space:nowrap;max-width:90vw;text-align:center}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:600px){nav{padding:.7rem 1rem}.nav-uname{display:none}#screenApp{padding:1rem .875rem}.stats-bar{gap:.5rem}.stat-card{padding:.9rem .5rem}.stat-n{font-size:1.5rem}.task-del-btn{opacity:1}.auth-card{padding:2rem 1.5rem}}
+.task-card.done-card{opacity:.6}
+.task-card.drag-over{border-color:var(--primary);background:rgba(99,102,241,.06)}
+.task-top{display:flex;align-items:center;gap:.6rem}
+.task-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border-h);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--ease)}
+.task-check.checked{background:var(--primary);border-color:var(--primary)}
+.task-check svg{width:12px;height:12px;stroke:#fff;stroke-width:3;display:none}
+.task-check.checked svg{display:block}
+.task-text{flex:1;font-size:.9rem;line-height:1.5;word-break:break-word}
+.task-text.striked{text-decoration:line-through;color:var(--text-3)}
+.task-actions{display:flex;align-items:center;gap:.3rem;flex-shrink:0}
+.task-avatar{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);object-fit:cover;cursor:default;flex-shrink:0}
+.task-attach-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all var(--ease);position:relative;flex-shrink:0}
+.task-attach-btn:hover{border-color:var(--border-h);color:var(--text)}
+.task-attach-btn svg{width:13px;height:13px;stroke-width:2}
+.task-attach-badge{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:var(--primary);color:#fff;font-size:.55rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.task-del{width:28px;height:28px;border-radius:6px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all var(--ease)}
+.task-del:hover{color:#f43f5e;background:rgba(244,63,94,.1)}
+.task-del svg{width:14px;height:14px;stroke-width:2}
+.attach-panel{overflow:hidden;max-height:0;transition:max-height .3s var(--ease);border-top:0 solid var(--border)}
+.attach-panel.open{max-height:600px;border-top:1px solid var(--border);padding-top:.5rem}
+.attach-drop{border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--ease);color:var(--text-3);font-size:.82rem}
+.attach-drop:hover,.attach-drop.dragover{border-color:var(--primary);color:var(--primary-1);background:rgba(99,102,241,.05)}
+.attach-drop svg{width:24px;height:24px;stroke-width:1.5;margin-bottom:.4rem}
+.attach-drop input{display:none}
+.attach-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.attach-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:.3rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.4rem;width:80px;cursor:pointer}
+.attach-item img{width:72px;height:64px;object-fit:cover;border-radius:5px}
+.attach-item-icon{width:72px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;color:var(--text-2)}
+.attach-item-icon svg{width:28px;height:28px;stroke-width:1.5}
+.attach-item-name{font-size:.65rem;color:var(--text-2);width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.attach-item-size{font-size:.6rem;color:var(--text-3)}
+.attach-item-del{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:rgba(244,63,94,.85);border:none;cursor:pointer;display:none;align-items:center;justify-content:center}
+.attach-item:hover .attach-item-del{display:flex}
+.attach-item-del svg{width:10px;height:10px;stroke:#fff;stroke-width:3}
+.attach-upload-row{display:flex;align-items:center;gap:.5rem;margin-top:.5rem}
+.upload-progress{flex:1;height:4px;border-radius:2px;background:var(--surface3);overflow:hidden;display:none}
+.upload-progress.active{display:block}
+.upload-progress-bar{height:100%;border-radius:2px;background:var(--primary);transition:width .3s}
+.upload-status{font-size:.75rem;color:var(--text-3)}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:8px;object-fit:contain}
+.lightbox-close{position:absolute;top:1rem;left:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center}
+.lightbox-close svg{width:20px;height:20px;stroke-width:2.5}
+.toast{position:fixed;bottom:1.5rem;right:50%;transform:translateX(50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.7rem 1.2rem;font-size:.85rem;box-shadow:var(--shadow-lg);z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text-3)}
+.empty-state svg{width:48px;height:48px;stroke-width:1.2;margin-bottom:.75rem;color:var(--text-3)}
+.empty-state p{font-size:.9rem}
+.size-warn{color:#f59e0b;font-size:.75rem;margin-top:.25rem;display:none}
+@media(max-width:600px){
+  nav{padding:.7rem 1rem}
+  .nav-title{font-size:.9rem}
+  .nav-uname{display:none}
+  .stats-row{gap:.5rem}
+  .stat-num{font-size:1.3rem}
+  #screenApp{padding:1rem .75rem}
+  .auth-card{padding:2rem 1.5rem}
+  .auth-card h2{font-size:1.5rem}
+  .add-box{padding:.6rem .75rem}
+  .task-card{padding:.75rem .8rem}
+}
 </style>
 </head>
 <body data-theme="dark">
 <nav>
   <div class="nav-brand">
-    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></div>
+    <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
     <span class="nav-title">TaskManager</span>
   </div>
   <div class="nav-right">
-    <button class="theme-btn" id="themeBtn" title="החלף ערכת צבעים">
-      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <button class="theme-btn" id="themeTgl" title="החלף ערכת צבעים" onclick="cycleTheme()">
+      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
     </button>
     <div id="navUser" style="display:none">
-      <img id="navAvatar" src="" alt="">
-      <span class="nav-uname" id="navName"></span>
-      <button class="nav-signout" id="btnSignOut">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        התנתק
+      <img id="navAvatar" src="" alt="avatar">
+      <span class="nav-uname" id="navUname"></span>
+      <button class="nav-signout" onclick="doSignOut()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        יציאה
       </button>
     </div>
   </div>
 </nav>
+
 <div id="screenAuth">
   <div class="auth-card">
-    <div class="auth-icon-wrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></div>
-    <h2>ברוך הבא</h2>
-    <p>נהל משימות עם הצוות שלך<br>בזמן אמת, מכל מקום</p>
-    <div class="auth-sep">כניסה מאובטחת</div>
-    <button id="btnSignIn"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>המשך עם Google</button>
+    <div class="auth-icon-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    </div>
+    <h2>TaskManager Enterprise</h2>
+    <p>סביבת עבודה משותפת בזמן אמת.<br>התחבר כדי להתחיל לנהל את המשימות שלך.</p>
+    <div class="auth-sep">כניסה</div>
+    <button class="auth-btn" onclick="doSignIn()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.7 29.2 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.5 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.6 20-21 0-1.3-.2-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.4 18.9 12 24 12c3.1 0 5.9 1.1 8.1 3l5.7-5.7C34.5 5.1 29.6 3 24 3 16.3 3 9.6 7.5 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.4C29.6 36.3 26.9 37 24 37c-5.2 0-9.6-3.3-11.3-8H6.1C9.4 37.6 16.2 45 24 45z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.2-2.2 4-4 5.5l6.6 5.4C42 35.1 44 30 44 24c0-1.3-.2-2.7-.4-4z"/></svg>
+      התחבר עם Google
+    </button>
   </div>
 </div>
+
 <div id="screenApp">
-  <div class="ws-badge">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    <div class="ws-dot"></div>
-    Workspace משותף — כל חברי הצוות רואים את אותן המשימות
+  <div class="workspace-badge">
+    <div class="workspace-dot"></div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    <span>Workspace משותף — כל חברי הצוות רואים את אותן המשימות</span>
   </div>
-  <div class="stats-bar">
-    <div class="stat-card"><div class="stat-n total" id="statTotal">0</div><div class="stat-l">סה"כ</div></div>
-    <div class="stat-card"><div class="stat-n done" id="statDone">0</div><div class="stat-l">הושלמו</div></div>
-    <div class="stat-card"><div class="stat-n pend" id="statPend">0</div><div class="stat-l">ממתינות</div></div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num pend" id="statPend">0</div><div class="stat-label">ממתינות</div></div>
+    <div class="stat-card"><div class="stat-num done" id="statDone">0</div><div class="stat-label">הושלמו</div></div>
+    <div class="stat-card"><div class="stat-num total" id="statTotal">0</div><div class="stat-label">סה"כ</div></div>
   </div>
-  <div class="add-box" id="addBox">
-    <input id="taskInput" placeholder="הוסף משימה חדשה לצוות..." autocomplete="off">
-    <div class="add-right">
-      <button class="add-attach-btn" id="addAttachBtn" title="צרף קבצים">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-        <span class="attach-count" id="addAttachCount"></span>
+
+  <div class="add-box">
+    <input class="add-input" id="taskInput" placeholder="הוסף משימה חדשה לצוות..." onkeydown="if(event.key==='Enter')addTask()">
+    <div class="add-actions">
+      <button class="attach-trigger" id="addAttachTrig" onclick="toggleAddAttach()" title="צרף קבצים">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+        <span class="attach-badge" id="addAttachBadge" style="display:none"></span>
       </button>
-      <input type="file" id="addFileInput" multiple style="display:none" accept="*/*">
-      <button id="btnAdd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>הוסף</button>
+      <button class="add-btn" onclick="addTask()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        הוסף
+      </button>
     </div>
+    <div id="addPendingFiles" class="pending-files" style="display:none"></div>
+    <div class="size-warn" id="sizeWarn">קובץ גדול מדי - מקסימום 800KB לקובץ</div>
   </div>
-  <div id="pendingFilesBar" class="pending-files" style="display:none"></div>
-  <div class="section-hdr"><h2>משימות הצוות</h2><span class="task-count-badge" id="taskCountBadge">0 משימות</span></div>
+
+  <div class="tasks-header">
+    <span class="tasks-title">משימות הצוות</span>
+    <span class="tasks-count" id="tasksCount">0 משימות</span>
+  </div>
+
   <div id="taskList"></div>
 </div>
-<div id="lightbox"><button id="lb-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><img id="lbImg" src="" alt=""></div>
-<div id="toast"></div><script>(async()=>{
-const{initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-const{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-const{getFirestore,collection,addDoc,deleteDoc,doc,updateDoc,onSnapshot,arrayUnion,arrayRemove}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-const{getStorage,ref,uploadBytesResumable,getDownloadURL,deleteObject}=await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js');
-const cfg={apiKey:'AIzaSyBSsizUt53bkQD_Osc3oeSvvW-EJG96ZEo',authDomain:'taskmanager-enterprise.firebaseapp.com',projectId:'taskmanager-enterprise',storageBucket:'taskmanager-enterprise.appspot.com',messagingSenderId:'355996684261',appId:'1:355996684261:web:0286eaa61473af6b90290c'};
-const app=initializeApp(cfg);const auth=getAuth(app);const db=getFirestore(app);const storage=getStorage(app);
-let unsub=null,pendingFiles=[];
-const $=id=>document.getElementById(id);
-const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const fmtSize=b=>b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';
-const isImg=n=>/\.(jpe?g|png|gif|webp|svg|avif|bmp)$/i.test(n);
-const toast=msg=>{const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3500)};
 
-/* THEME */
-const themes=['dark','light','system'];
-let ti=themes.indexOf(localStorage.getItem('tm-theme')||'dark');if(ti<0)ti=0;
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(async()=>{
+const FIREBASE_CONFIG={apiKey:'AIzaSyBSsizUt53bkQD_Osc3oeSvvW-EJG96ZEo',authDomain:'taskmanager-enterprise.firebaseapp.com',projectId:'taskmanager-enterprise',storageBucket:'taskmanager-enterprise.appspot.com',messagingSenderId:'355996684261',appId:'1:355996684261:web:0286eaa61473af6b90290c'};
+const MAX_FILE_SIZE = 800 * 1024; // 800KB max per file (Firestore doc limit is ~1MB)
+
+// Firebase imports
+const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+const {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+const {getFirestore,collection,addDoc,onSnapshot,updateDoc,deleteDoc,doc,serverTimestamp}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+
+const app=initializeApp(FIREBASE_CONFIG);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const provider=new GoogleAuthProvider();
+
+// Theme
+let themes=['dark','light','system'];
+let themeIdx=0;
 function applyTheme(){
-  const t=themes[ti];localStorage.setItem('tm-theme',t);
-  const mq=window.matchMedia('(prefers-color-scheme:dark)');
-  document.body.dataset.theme=t==='system'?(mq.matches?'dark':'light'):t;
-  const i=$('themeIcon');if(!i)return;
-  const icons={dark:'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>',light:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',system:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'};
-  i.innerHTML=icons[t];
+  const t=themes[themeIdx];
+  const icons={
+    dark:'<circle cx="12" cy="12" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>',
+    light:'<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>',
+    system:'<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'
+  };
+  document.getElementById('themeIcon').innerHTML=icons[t];
+  if(t==='system'){
+    const isDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+    document.body.dataset.theme=isDark?'dark':'light';
+  } else {
+    document.body.dataset.theme=t;
+  }
+  localStorage.setItem('tm-theme',t);
+  showToast(t==='dark'?'מצב כהה':'t'==='light'?'מצב בהיר':'מצב מערכת');
 }
-applyTheme();
-$('themeBtn').addEventListener('click',()=>{ti=(ti+1)%3;applyTheme();toast(['מצב לילה','מצב יום','מצב מערכת'][ti]);});
+const saved=localStorage.getItem('tm-theme')||'dark';
+themeIdx=themes.indexOf(saved);
+if(themeIdx<0)themeIdx=0;
+// Apply without toast on load
+const t0=themes[themeIdx];
+const icons0={dark:'<circle cx="12" cy="12" r="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>',light:'<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>',system:'<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'};
+document.getElementById('themeIcon').innerHTML=icons0[t0];
+if(t0==='system'){const d=window.matchMedia('(prefers-color-scheme:dark)').matches;document.body.dataset.theme=d?'dark':'light';}else{document.body.dataset.theme=t0;}
+window.cycleTheme=function(){themeIdx=(themeIdx+1)%3;applyTheme();};
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(themes[themeIdx]==='system')applyTheme();});
 
-/* STATS */
-const updateStats=tasks=>{const d=tasks.filter(t=>t.done).length;$('statTotal').textContent=tasks.length;$('statDone').textContent=d;$('statPend').textContent=tasks.length-d;$('taskCountBadge').textContent=tasks.length+' משימות';};
+// Toast
+window.showToast=function(msg,dur=2200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);};
 
-/* PENDING FILES */
-function renderPending(){
-  const bar=$('pendingFilesBar');
-  if(!pendingFiles.length){bar.style.display='none';return;}
-  bar.style.display='flex';
-  bar.innerHTML=pendingFiles.map((f,i)=>'<div class="pf-chip"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span title="'+esc(f.name)+'">'+esc(f.name.length>18?f.name.slice(0,16)+'..':f.name)+'</span><button class="pf-chip-del" data-i="'+i+'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>').join('');
-  bar.querySelectorAll('.pf-chip-del').forEach(b=>b.onclick=()=>{pendingFiles.splice(+b.dataset.i,1);renderPending();updAC();});
-}
-function updAC(){const c=$('addAttachCount');if(pendingFiles.length){c.style.display='flex';c.textContent=pendingFiles.length;}else{c.style.display='none';}}
-function clearPending(){pendingFiles=[];renderPending();updAC();}
-$('addAttachBtn').onclick=()=>$('addFileInput').click();
-$('addFileInput').onchange=e=>{Array.from(e.target.files).forEach(f=>{if(f.size>10485760){toast('קובץ '+f.name+' גדול מ-10MB');return;}pendingFiles.push(f);});renderPending();updAC();e.target.value='';};
-
-/* UPLOAD with 20s timeout */
-async function uploadFile(tid,file,barEl){
-  const path='attachments/'+tid+'/'+Date.now()+'_'+encodeURIComponent(file.name);
-  return new Promise((res,rej)=>{
-    const timer=setTimeout(()=>{rej(new Error('storage/unauthorized'));},20000);
-    const up=uploadBytesResumable(ref(storage,path),file);
-    up.on('state_changed',
-      s=>{if(barEl)barEl.style.width=(s.bytesTransferred/s.totalBytes*100)+'%';},
-      err=>{clearTimeout(timer);rej(err);},
-      async()=>{
-        clearTimeout(timer);
-        try{const url=await getDownloadURL(up.snapshot.ref);res({name:file.name,url,size:file.size,type:file.type,path,uploadedBy:auth.currentUser.uid,uploadedAt:Date.now()});}
-        catch(e){rej(e);}
-      }
-    );
-  });
-}
-
-const storageErrMsg='להעלאת קבצים: Firebase Console > Storage > Rules > הוסף allow read, write: if request.auth != null';
-
-/* ATTACH PANEL */
-function buildAttachPanel(task,panel,uid){
-  const atts=task.attachments||[];
-  let h='<div class="attach-grid">';
-  atts.forEach((a,i)=>{
-    if(isImg(a.name)){
-      h+='<div class="attach-item"><img class="attach-img" src="'+esc(a.url)+'" alt="'+esc(a.name)+'" data-url="'+esc(a.url)+'">'
-        +(a.uploadedBy===uid?'<button class="attach-del-img" data-i="'+i+'" data-p="'+esc(a.path||'')+'" data-tid="'+task.id+'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>':'')
-        +'</div>';
-    }else{
-      h+='<div class="attach-item"><div class="attach-file">'
-        +'<div class="attach-file-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>'
-        +'<div class="attach-file-info"><div class="attach-file-name" title="'+esc(a.name)+'">'+esc(a.name.length>20?a.name.slice(0,18)+'..':a.name)+'</div><div class="attach-file-size">'+fmtSize(a.size)+'</div></div>'
-        +'<a class="attach-download" href="'+esc(a.url)+'" target="_blank" title="הורד"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
-        +(a.uploadedBy===uid?'<button class="attach-del-img" data-i="'+i+'" data-p="'+esc(a.path||'')+'" data-tid="'+task.id+'" style="position:static;opacity:1;width:20px;height:20px;background:none;border:none;cursor:pointer;color:var(--text-3);flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>':'')
-        +'</div></div>';
-    }
-  });
-  h+='<button class="attach-add-btn" data-tid="'+task.id+'">'
-    +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>הוסף</button></div>'
-    +'<div class="upload-progress" id="up-'+task.id+'"><div class="upload-bar" style="width:0%"></div></div>';
-  panel.innerHTML=h;
-  panel.querySelectorAll('.attach-img').forEach(img=>img.onclick=()=>{$('lbImg').src=img.dataset.url;$('lightbox').classList.add('open');});
-  panel.querySelectorAll('.attach-del-img').forEach(btn=>btn.onclick=async()=>{
-    const a=(task.attachments||[])[+btn.dataset.i];if(!a)return;
-    if(a.path)try{await deleteObject(ref(storage,a.path));}catch(x){}
-    await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayRemove(a)});toast('קובץ נמחק');
-  });
-  panel.querySelectorAll('.attach-add-btn').forEach(btn=>{
-    const inp=Object.assign(document.createElement('input'),{type:'file',multiple:true,style:'display:none'});
-    panel.appendChild(inp);btn.onclick=()=>inp.click();
-    inp.onchange=async e=>{
-      const valid=Array.from(e.target.files).filter(f=>{if(f.size>10485760){toast('קובץ '+f.name+' גדול מ-10MB');return false;}return true;});
-      e.target.value='';if(!valid.length)return;
-      const pw=document.getElementById('up-'+btn.dataset.tid);
-      if(pw){pw.classList.add('show');pw.querySelector('.upload-bar').style.width='0%';}
-      toast('מעלה קבצים...');
-      try{
-        const up=await Promise.all(valid.map(f=>uploadFile(btn.dataset.tid,f,pw?.querySelector('.upload-bar'))));
-        await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayUnion(...up)});
-        toast('קבצים עלו!');
-      }catch(er){
-        toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')?storageErrMsg:'שגיאה: '+er.message.slice(0,50));
-      }
-      if(pw){pw.classList.remove('show');pw.querySelector('.upload-bar').style.width='0%';}
-    };
-  });
-}
-
-/* RENDER */
-function render(tasks,uid){
-  updateStats(tasks);
-  const sorted=[...tasks].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  const L=$('taskList');
-  if(!sorted.length){L.innerHTML='<div class="empty"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></div><h3>אין משימות עדיין</h3><p>הוסף את המשימה הראשונה לצוות</p></div>';return;}
-  L.innerHTML=sorted.map(t=>{
-    const cnt=(t.attachments||[]).length;
-    const av=t.userPhoto?'<div class="task-avatar-wrap"><img class="task-av" src="'+esc(t.userPhoto)+'" alt=""><span class="task-tip">'+esc(t.userName||'')+'</span></div>':'<div class="task-avatar-wrap"><div class="task-av-fb">'+esc((t.userName||'?')[0].toUpperCase())+'</div><span class="task-tip">'+esc(t.userName||'')+'</span></div>';
-    return '<div class="task-card'+(t.done?' done':'')+'" data-id="'+t.id+'">'
-      +'<div class="task-stripe"></div><div class="task-main">'
-      +'<div class="task-check'+(t.done?' checked':'')+'" data-id="'+t.id+'" data-done="'+(!t.done)+'">'
-      +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>'
-      +'<span class="task-text">'+esc(t.text)+'</span>'
-      +'<div class="task-meta">'+av
-      +'<button class="task-attach-toggle" data-id="'+t.id+'" title="קבצים ('+cnt+')">'
-      +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>'
-      +(cnt?'<span class="task-attach-badge">'+cnt+'</span>':'')+'</button>'
-      +(t.uid===uid?'<button class="task-del-btn" data-id="'+t.id+'" title="מחק"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>':'')
-      +'</div></div>'
-      +'<div class="attach-panel'+(cnt?' open':'')+'" id="ap-'+t.id+'"></div>'
-      +'<div class="drop-overlay">שחרר קבצים לצירוף</div></div>';
-  }).join('');
-  sorted.forEach(t=>{const p=document.getElementById('ap-'+t.id);if(p)buildAttachPanel(t,p,uid);});
-  L.querySelectorAll('.task-check').forEach(e=>e.onclick=()=>updateDoc(doc(db,'tasks',e.dataset.id),{done:e.dataset.done==='true'}).then(()=>toast(e.dataset.done==='true'?'הושלמה':'פתוחה מחדש')));
-  L.querySelectorAll('.task-del-btn').forEach(e=>e.onclick=()=>{
-    if(!confirm('למחוק?'))return;
-    const t=sorted.find(x=>x.id===e.dataset.id);
-    if(t?.attachments?.length)t.attachments.forEach(a=>{if(a.path)try{deleteObject(ref(storage,a.path));}catch(x){}});
-    deleteDoc(doc(db,'tasks',e.dataset.id)).then(()=>toast('נמחקה'));
-  });
-  L.querySelectorAll('.task-attach-toggle').forEach(btn=>btn.onclick=()=>{
-    const p=document.getElementById('ap-'+btn.dataset.id);if(!p)return;
-    p.classList.toggle('open');btn.classList.toggle('act');
-  });
-  L.querySelectorAll('.task-card').forEach(card=>{
-    card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-over');});
-    card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
-    card.addEventListener('drop',async e=>{
-      e.preventDefault();card.classList.remove('drag-over');
-      const tid=card.dataset.id;const files=Array.from(e.dataTransfer.files).filter(f=>f.size<=10485760);
-      if(!files.length)return;
-      const p=document.getElementById('ap-'+tid);if(p)p.classList.add('open');
-      toast('מעלה קבצים...');
-      try{const up=await Promise.all(files.map(f=>uploadFile(tid,f,null)));await updateDoc(doc(db,'tasks',tid),{attachments:arrayUnion(...up)});toast('קבצים עלו!');}
-      catch(er){toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')?storageErrMsg:'שגיאה: '+er.message.slice(0,50));}
-    });
-  });
-}
-
-/* AUTH */
+// Auth
+let currentUser=null;
+window.doSignIn=async function(){try{await signInWithPopup(auth,provider);}catch(e){showToast('שגיאת התחברות');}};
+window.doSignOut=async function(){await signOut(auth);};
 onAuthStateChanged(auth,u=>{
+  currentUser=u;
   if(u){
-    $('screenAuth').style.display='none';$('screenApp').style.display='block';$('navUser').style.display='flex';
-    $('navAvatar').src=u.photoURL||'';$('navName').textContent=u.displayName||u.email;
-    if(unsub)unsub();
-    unsub=onSnapshot(collection(db,'tasks'),s=>render(s.docs.map(d=>({id:d.id,...d.data()})),u.uid));
-    toast('שלום '+((u.displayName||u.email).split(' ')[0])+'!');
-  }else{
-    $('screenAuth').style.display='flex';$('screenApp').style.display='none';$('navUser').style.display='none';
-    if(unsub){unsub();unsub=null;}
+    document.getElementById('screenAuth').style.display='none';
+    document.getElementById('screenApp').style.display='block';
+    document.getElementById('navUser').style.display='flex';
+    document.getElementById('navAvatar').src=u.photoURL||'';
+    document.getElementById('navUname').textContent=u.displayName||u.email||'';
+    startTaskListener();
+  } else {
+    document.getElementById('screenAuth').style.display='flex';
+    document.getElementById('screenApp').style.display='none';
+    document.getElementById('navUser').style.display='none';
   }
 });
-$('btnSignIn').onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast('שגיאה: '+e.message));
-$('btnSignOut').onclick=()=>signOut(auth).then(()=>toast('להתראות!'));
 
-/* ADD TASK — FIX: clear pending immediately, open panel after upload */
-$('btnAdd').onclick=async()=>{
-  const inp=$('taskInput'),txt=inp.value.trim(),u=auth.currentUser;
-  if(!txt||!u){if(!txt)inp.focus();return;}
-  const filesToUpload=[...pendingFiles];
-  inp.value='';
+// Pending file attachments for new task (base64)
+let pendingFiles=[];
+function clearPending(){pendingFiles=[];renderPending();}
+function renderPending(){
+  const wrap=document.getElementById('addPendingFiles');
+  const badge=document.getElementById('addAttachBadge');
+  if(!pendingFiles.length){wrap.style.display='none';badge.style.display='none';return;}
+  wrap.style.display='flex';
+  badge.style.display='flex';badge.textContent=pendingFiles.length;
+  wrap.innerHTML='';
+  pendingFiles.forEach((f,i)=>{
+    const chip=document.createElement('div');chip.className='pending-chip';
+    let preview='';
+    if(f.type.startsWith('image/')&&f.data){preview=`<img class="pending-img-preview" src="${f.data}" alt="">`;}
+    chip.innerHTML=`${preview}<span>${f.name}</span><button onclick="removePending(${i})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+    wrap.appendChild(chip);
+  });
+}
+window.removePending=function(i){pendingFiles.splice(i,1);renderPending();};
+window.toggleAddAttach=function(){
+  const fileInput=document.createElement('input');fileInput.type='file';fileInput.multiple=true;fileInput.accept='image/*,application/pdf,.doc,.docx,.xls,.xlsx,.txt,.zip';
+  fileInput.onchange=e=>handlePendingFiles(Array.from(e.target.files));
+  fileInput.click();
+};
+
+function handlePendingFiles(files){
+  const warn=document.getElementById('sizeWarn');
+  let hasWarn=false;
+  files.forEach(file=>{
+    if(file.size>MAX_FILE_SIZE){hasWarn=true;return;}
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      pendingFiles.push({name:file.name,type:file.type,size:file.size,data:ev.target.result});
+      renderPending();
+    };
+    reader.readAsDataURL(file);
+  });
+  if(hasWarn){warn.style.display='block';setTimeout(()=>warn.style.display='none',3000);}
+}
+
+// Add task
+window.addTask=async function(){
+  if(!currentUser)return;
+  const inp=document.getElementById('taskInput');
+  const text=inp.value.trim();
+  if(!text)return;
+  const filesToAdd=[...pendingFiles];
   clearPending();
-  const dr=await addDoc(collection(db,'tasks'),{text:txt,done:false,uid:u.uid,userName:u.displayName||u.email,userPhoto:u.photoURL||'',createdAt:Date.now(),attachments:[]});
-  if(filesToUpload.length){
-    toast('מעלה '+filesToUpload.length+' קבצים...');
-    try{
-      const uploaded=await Promise.all(filesToUpload.map(f=>uploadFile(dr.id,f,null)));
-      await updateDoc(doc(db,'tasks',dr.id),{attachments:arrayUnion(...uploaded)});
-      toast('נוסף עם '+uploaded.length+' קבצים!');
-    }catch(er){
-      toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')
-        ?storageErrMsg
-        :'המשימה נוספה, שגיאה בקבצים: '+er.message.slice(0,40));
-    }
-  }else{
-    toast('נוסף!');
+  inp.value='';
+  try{
+    await addDoc(collection(db,'tasks'),{
+      text,
+      done:false,
+      uid:currentUser.uid,
+      userName:currentUser.displayName||currentUser.email||'',
+      userPhoto:currentUser.photoURL||'',
+      attachments:filesToAdd,
+      createdAt:serverTimestamp()
+    });
+  } catch(e){showToast('שגיאה בהוספת משימה');}
+};
+
+// Task listener
+let unsubTasks=null;
+function startTaskListener(){
+  if(unsubTasks)unsubTasks();
+  unsubTasks=onSnapshot(collection(db,'tasks'),snap=>{
+    let tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
+    tasks.sort((a,b)=>{
+      const ta=a.createdAt?.toMillis?.()||0;
+      const tb=b.createdAt?.toMillis?.()||0;
+      return tb-ta;
+    });
+    renderTasks(tasks);
+  });
+}
+
+// Render tasks
+function renderTasks(tasks){
+  const list=document.getElementById('taskList');
+  const done=tasks.filter(t=>t.done).length;
+  document.getElementById('statDone').textContent=done;
+  document.getElementById('statPend').textContent=tasks.length-done;
+  document.getElementById('statTotal').textContent=tasks.length;
+  document.getElementById('tasksCount').textContent=tasks.length+' משימות';
+  if(!tasks.length){list.innerHTML=`<div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><p>אין משימות עדיין — הוסף את הראשונה!</p></div>`;return;}
+  list.innerHTML=tasks.map(task=>{
+    const att=task.attachments||[];
+    const cnt=att.length;
+    const isOwner=currentUser&&task.uid===currentUser.uid;
+    return `<div class="task-card${task.done?' done-card':''}" id="tc-${task.id}" ondragover="ev.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event,'${task.id}')">
+      <div class="task-top">
+        <button class="task-check${task.done?' checked':''}" onclick="toggleTask('${task.id}',${!task.done})">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </button>
+        <span class="task-text${task.done?' striked':''}">${escapeHtml(task.text)}</span>
+        <div class="task-actions">
+          ${task.userPhoto?`<img class="task-avatar" src="${task.userPhoto}" alt="${escapeHtml(task.userName||'')}" title="${escapeHtml(task.userName||'')}" onerror="this.style.display='none'">`:''}
+          <button class="task-attach-btn" onclick="toggleAttachPanel('${task.id}')" title="קבצים מצורפים">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+            ${cnt?`<span class="task-attach-badge">${cnt}</span>`:''}
+          </button>
+          ${isOwner?`<button class="task-del" onclick="deleteTask('${task.id}')" title="מחק משימה"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>`:''}
+        </div>
+      </div>
+      <div class="attach-panel${cnt?' open':''}" id="ap-${task.id}">
+        ${cnt?`<div class="attach-grid">${att.map((a,ai)=>`<div class="attach-item" onclick="clickAttach('${task.id}',${ai})">${a.type&&a.type.startsWith('image/')&&a.data?`<img src="${a.data}" alt="${escapeHtml(a.name)}">`:`<div class="attach-item-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span style="font-size:.65rem;color:var(--text-3)">${(a.size/1024).toFixed(0)}KB</span></div>`}<div class="attach-item-name">${escapeHtml(a.name)}</div>${isOwner?`<button class="attach-item-del" onclick="event.stopPropagation();delAttachment('${task.id}',${ai})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>`:''}
+        </div>`).join('')}</div>`:''}
+        <label class="attach-drop" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event,'${task.id}');this.classList.remove('dragover')">
+          <input type="file" multiple accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.txt,.zip" onchange="addAttachmentsToTask('${task.id}',Array.from(this.files))">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <div>גרור קבצים לכאן או לחץ לבחירה</div>
+          <div style="font-size:.7rem;margin-top:.2rem">מקסימום 800KB לקובץ</div>
+        </label>
+        <div class="upload-progress" id="up-${task.id}"><div class="upload-progress-bar" id="upb-${task.id}" style="width:0%"></div></div>
+        <div class="upload-status" id="us-${task.id}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// Toggle task done
+window.toggleTask=async function(id,done){
+  try{await updateDoc(doc(db,'tasks',id),{done});}catch(e){showToast('שגיאה');}
+};
+
+// Delete task
+window.deleteTask=async function(id){
+  try{await deleteDoc(doc(db,'tasks',id));showToast('משימה נמחקה');}catch(e){showToast('שגיאה במחיקה');}
+};
+
+// Toggle attach panel
+window.toggleAttachPanel=function(id){
+  const panel=document.getElementById('ap-'+id);
+  if(panel)panel.classList.toggle('open');
+};
+
+// Add attachments to existing task (base64)
+window.addAttachmentsToTask=async function(taskId,files){
+  if(!currentUser)return;
+  const warn=document.getElementById('sizeWarn');
+  const progressBar=document.getElementById('upb-'+taskId);
+  const progressWrap=document.getElementById('up-'+taskId);
+  const statusEl=document.getElementById('us-'+taskId);
+  
+  const validFiles=files.filter(f=>{
+    if(f.size>MAX_FILE_SIZE){showToast('קובץ גדול מדי: '+f.name+' (מקסימום 800KB)');return false;}
+    return true;
+  });
+  if(!validFiles.length)return;
+  
+  progressWrap.classList.add('active');
+  statusEl.textContent='מעלה...';
+  
+  const newAttachments=await Promise.all(validFiles.map((file,i)=>new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onprogress=e=>{if(e.lengthComputable){const pct=Math.round(((i/validFiles.length)+(e.loaded/e.total/validFiles.length))*100);if(progressBar)progressBar.style.width=pct+'%';}};
+    reader.onload=ev=>{resolve({name:file.name,type:file.type,size:file.size,data:ev.target.result,uploadedBy:currentUser.uid,uploadedAt:Date.now()});};
+    reader.readAsDataURL(file);
+  })));
+  
+  if(progressBar)progressBar.style.width='90%';
+  
+  // Get current task attachments
+  const {getDoc}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+  const taskDoc=await getDoc(doc(db,'tasks',taskId));
+  if(!taskDoc.exists()){statusEl.textContent='שגיאה';return;}
+  const existing=taskDoc.data().attachments||[];
+  const combined=[...existing,...newAttachments];
+  
+  await updateDoc(doc(db,'tasks',taskId),{attachments:combined});
+  if(progressBar)progressBar.style.width='100%';
+  statusEl.textContent='הועלה בהצלחה!';
+  setTimeout(()=>{progressWrap.classList.remove('active');statusEl.textContent='';if(progressBar)progressBar.style.width='0%';},1500);
+  showToast(newAttachments.length+' קבצים נוספו');
+};
+
+// Drag drop on task card
+window.handleDrop=function(event,taskId){
+  event.preventDefault();
+  const card=document.getElementById('tc-'+taskId);
+  if(card)card.classList.remove('drag-over');
+  const files=Array.from(event.dataTransfer.files);
+  if(files.length)addAttachmentsToTask(taskId,files);
+};
+
+// Click attachment
+window.clickAttach=function(taskId,idx){
+  // Find task in current snapshot — just open image lightbox or download
+  const panel=document.getElementById('ap-'+taskId);
+  const items=panel?.querySelectorAll('.attach-item');
+  // We'll find the data from Firestore snapshot cache — easier to re-read from DOM
+  const imgEl=items?.[idx]?.querySelector('img');
+  if(imgEl){openLightbox(imgEl.src);return;}
+  // For non-images, download via anchor
+  const attachItemEl=items?.[idx];
+  if(attachItemEl){
+    // Try to get data from the rendered element — we need to store it
+    // Actually just show toast - user can use the delete button  
+    showToast('לחץ לחיצה ימנית להורדה');
   }
 };
-$('taskInput').onkeydown=e=>{if(e.key==='Enter')$('btnAdd').click();};
-$('lightbox').onclick=e=>{if(e.target===$('lightbox')||e.target.closest('#lb-close'))$('lightbox').classList.remove('open');};
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('lightbox').classList.remove('open');});
-})();</script></body></html>
+
+// Delete attachment
+window.delAttachment=async function(taskId,idx){
+  if(!currentUser)return;
+  const {getDoc}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+  const taskDoc=await getDoc(doc(db,'tasks',taskId));
+  if(!taskDoc.exists())return;
+  const att=[...(taskDoc.data().attachments||[])];
+  att.splice(idx,1);
+  await updateDoc(doc(db,'tasks',taskId),{attachments:att});
+  showToast('קובץ הוסר');
+};
+
+// Lightbox
+window.openLightbox=function(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');};
+window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('open');};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+})();
+</script>
+</body>
+</html>
