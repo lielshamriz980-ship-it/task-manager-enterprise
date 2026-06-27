@@ -98,7 +98,7 @@ nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:
 .task-del-btn{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid transparent;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all var(--ease);opacity:0}
 .task-card:hover .task-del-btn{opacity:1}
 .task-del-btn:hover{border-color:rgba(244,63,94,.3);color:var(--danger);background:rgba(244,63,94,.1)}
-.task-del-btn svg,.task-del-btn svg{width:14px;height:14px;stroke-width:2}
+.task-del-btn svg{width:14px;height:14px;stroke-width:2}
 .attach-panel{border-top:1px solid var(--border);padding:.75rem 1rem;display:none}
 .attach-panel.open{display:block}
 .attach-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.4rem}
@@ -136,7 +136,7 @@ nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:
 #lightbox img{max-width:100%;max-height:90vh;border-radius:var(--r);object-fit:contain}
 #lb-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff}
 #lb-close svg{width:20px;height:20px;stroke-width:2}
-#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surface3);color:var(--text);border:1px solid var(--border);padding:.65rem 1.25rem;border-radius:var(--r);font-size:.85rem;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:500;box-shadow:var(--shadow);white-space:nowrap}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surface3);color:var(--text);border:1px solid var(--border);padding:.65rem 1.25rem;border-radius:var(--r);font-size:.85rem;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:500;box-shadow:var(--shadow);white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:600px){nav{padding:.7rem 1rem}.nav-uname{display:none}#screenApp{padding:1rem .875rem}.stats-bar{gap:.5rem}.stat-card{padding:.9rem .5rem}.stat-n{font-size:1.5rem}.task-del-btn{opacity:1}.auth-card{padding:2rem 1.5rem}}
 </style>
@@ -209,7 +209,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtSize=b=>b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';
 const isImg=n=>/\.(jpe?g|png|gif|webp|svg|avif|bmp)$/i.test(n);
-const toast=msg=>{const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800)};
+const toast=msg=>{const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3500)};
 
 /* THEME */
 const themes=['dark','light','system'];
@@ -237,17 +237,29 @@ function renderPending(){
   bar.querySelectorAll('.pf-chip-del').forEach(b=>b.onclick=()=>{pendingFiles.splice(+b.dataset.i,1);renderPending();updAC();});
 }
 function updAC(){const c=$('addAttachCount');if(pendingFiles.length){c.style.display='flex';c.textContent=pendingFiles.length;}else{c.style.display='none';}}
+function clearPending(){pendingFiles=[];renderPending();updAC();}
 $('addAttachBtn').onclick=()=>$('addFileInput').click();
 $('addFileInput').onchange=e=>{Array.from(e.target.files).forEach(f=>{if(f.size>10485760){toast('קובץ '+f.name+' גדול מ-10MB');return;}pendingFiles.push(f);});renderPending();updAC();e.target.value='';};
 
-/* UPLOAD */
+/* UPLOAD with 20s timeout */
 async function uploadFile(tid,file,barEl){
   const path='attachments/'+tid+'/'+Date.now()+'_'+encodeURIComponent(file.name);
   return new Promise((res,rej)=>{
+    const timer=setTimeout(()=>{rej(new Error('storage/unauthorized'));},20000);
     const up=uploadBytesResumable(ref(storage,path),file);
-    up.on('state_changed',s=>{if(barEl)barEl.style.width=(s.bytesTransferred/s.totalBytes*100)+'%';},rej,async()=>{const url=await getDownloadURL(up.snapshot.ref);res({name:file.name,url,size:file.size,type:file.type,path,uploadedBy:auth.currentUser.uid,uploadedAt:Date.now()});});
+    up.on('state_changed',
+      s=>{if(barEl)barEl.style.width=(s.bytesTransferred/s.totalBytes*100)+'%';},
+      err=>{clearTimeout(timer);rej(err);},
+      async()=>{
+        clearTimeout(timer);
+        try{const url=await getDownloadURL(up.snapshot.ref);res({name:file.name,url,size:file.size,type:file.type,path,uploadedBy:auth.currentUser.uid,uploadedAt:Date.now()});}
+        catch(e){rej(e);}
+      }
+    );
   });
 }
+
+const storageErrMsg='להעלאת קבצים: Firebase Console > Storage > Rules > הוסף allow read, write: if request.auth != null';
 
 /* ATTACH PANEL */
 function buildAttachPanel(task,panel,uid){
@@ -273,10 +285,9 @@ function buildAttachPanel(task,panel,uid){
   panel.innerHTML=h;
   panel.querySelectorAll('.attach-img').forEach(img=>img.onclick=()=>{$('lbImg').src=img.dataset.url;$('lightbox').classList.add('open');});
   panel.querySelectorAll('.attach-del-img').forEach(btn=>btn.onclick=async()=>{
-    const a=( task.attachments||[])[+btn.dataset.i];if(!a)return;
+    const a=(task.attachments||[])[+btn.dataset.i];if(!a)return;
     if(a.path)try{await deleteObject(ref(storage,a.path));}catch(x){}
-    await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayRemove(a)});
-    toast('קובץ נמחק');
+    await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayRemove(a)});toast('קובץ נמחק');
   });
   panel.querySelectorAll('.attach-add-btn').forEach(btn=>{
     const inp=Object.assign(document.createElement('input'),{type:'file',multiple:true,style:'display:none'});
@@ -284,9 +295,16 @@ function buildAttachPanel(task,panel,uid){
     inp.onchange=async e=>{
       const valid=Array.from(e.target.files).filter(f=>{if(f.size>10485760){toast('קובץ '+f.name+' גדול מ-10MB');return false;}return true;});
       e.target.value='';if(!valid.length)return;
-      const pw=document.getElementById('up-'+btn.dataset.tid);if(pw)pw.classList.add('show');
-      try{const up=await Promise.all(valid.map(f=>uploadFile(btn.dataset.tid,f,pw?.querySelector('.upload-bar'))));await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayUnion(...up)});toast('קבצים עלו!');}
-      catch(er){toast('שגיאה: '+er.message);}
+      const pw=document.getElementById('up-'+btn.dataset.tid);
+      if(pw){pw.classList.add('show');pw.querySelector('.upload-bar').style.width='0%';}
+      toast('מעלה קבצים...');
+      try{
+        const up=await Promise.all(valid.map(f=>uploadFile(btn.dataset.tid,f,pw?.querySelector('.upload-bar'))));
+        await updateDoc(doc(db,'tasks',btn.dataset.tid),{attachments:arrayUnion(...up)});
+        toast('קבצים עלו!');
+      }catch(er){
+        toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')?storageErrMsg:'שגיאה: '+er.message.slice(0,50));
+      }
       if(pw){pw.classList.remove('show');pw.querySelector('.upload-bar').style.width='0%';}
     };
   });
@@ -302,8 +320,7 @@ function render(tasks,uid){
     const cnt=(t.attachments||[]).length;
     const av=t.userPhoto?'<div class="task-avatar-wrap"><img class="task-av" src="'+esc(t.userPhoto)+'" alt=""><span class="task-tip">'+esc(t.userName||'')+'</span></div>':'<div class="task-avatar-wrap"><div class="task-av-fb">'+esc((t.userName||'?')[0].toUpperCase())+'</div><span class="task-tip">'+esc(t.userName||'')+'</span></div>';
     return '<div class="task-card'+(t.done?' done':'')+'" data-id="'+t.id+'">'
-      +'<div class="task-stripe"></div>'
-      +'<div class="task-main">'
+      +'<div class="task-stripe"></div><div class="task-main">'
       +'<div class="task-check'+(t.done?' checked':'')+'" data-id="'+t.id+'" data-done="'+(!t.done)+'">'
       +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>'
       +'<span class="task-text">'+esc(t.text)+'</span>'
@@ -313,7 +330,7 @@ function render(tasks,uid){
       +(cnt?'<span class="task-attach-badge">'+cnt+'</span>':'')+'</button>'
       +(t.uid===uid?'<button class="task-del-btn" data-id="'+t.id+'" title="מחק"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg></button>':'')
       +'</div></div>'
-      +'<div class="attach-panel" id="ap-'+t.id+'"></div>'
+      +'<div class="attach-panel'+(cnt?' open':'')+'" id="ap-'+t.id+'"></div>'
       +'<div class="drop-overlay">שחרר קבצים לצירוף</div></div>';
   }).join('');
   sorted.forEach(t=>{const p=document.getElementById('ap-'+t.id);if(p)buildAttachPanel(t,p,uid);});
@@ -336,8 +353,9 @@ function render(tasks,uid){
       const tid=card.dataset.id;const files=Array.from(e.dataTransfer.files).filter(f=>f.size<=10485760);
       if(!files.length)return;
       const p=document.getElementById('ap-'+tid);if(p)p.classList.add('open');
+      toast('מעלה קבצים...');
       try{const up=await Promise.all(files.map(f=>uploadFile(tid,f,null)));await updateDoc(doc(db,'tasks',tid),{attachments:arrayUnion(...up)});toast('קבצים עלו!');}
-      catch(er){toast('שגיאה: '+er.message);}
+      catch(er){toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')?storageErrMsg:'שגיאה: '+er.message.slice(0,50));}
     });
   });
 }
@@ -358,16 +376,28 @@ onAuthStateChanged(auth,u=>{
 $('btnSignIn').onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>toast('שגיאה: '+e.message));
 $('btnSignOut').onclick=()=>signOut(auth).then(()=>toast('להתראות!'));
 
-/* ADD TASK */
+/* ADD TASK — FIX: clear pending immediately, open panel after upload */
 $('btnAdd').onclick=async()=>{
-  const inp=$('taskInput'),txt=inp.value.trim(),u=auth.currentUser;if(!txt||!u)return;
+  const inp=$('taskInput'),txt=inp.value.trim(),u=auth.currentUser;
+  if(!txt||!u){if(!txt)inp.focus();return;}
+  const filesToUpload=[...pendingFiles];
+  inp.value='';
+  clearPending();
   const dr=await addDoc(collection(db,'tasks'),{text:txt,done:false,uid:u.uid,userName:u.displayName||u.email,userPhoto:u.photoURL||'',createdAt:Date.now(),attachments:[]});
-  if(pendingFiles.length){
-    try{const up=await Promise.all(pendingFiles.map(f=>uploadFile(dr.id,f,null)));await updateDoc(doc(db,'tasks',dr.id),{attachments:arrayUnion(...up)});}
-    catch(er){toast('שגיאה בהעלאה');}
-    pendingFiles=[];renderPending();updAC();
+  if(filesToUpload.length){
+    toast('מעלה '+filesToUpload.length+' קבצים...');
+    try{
+      const uploaded=await Promise.all(filesToUpload.map(f=>uploadFile(dr.id,f,null)));
+      await updateDoc(doc(db,'tasks',dr.id),{attachments:arrayUnion(...uploaded)});
+      toast('נוסף עם '+uploaded.length+' קבצים!');
+    }catch(er){
+      toast(er.code==='storage/unauthorized'||er.message.includes('storage/unauthorized')
+        ?storageErrMsg
+        :'המשימה נוספה, שגיאה בקבצים: '+er.message.slice(0,40));
+    }
+  }else{
+    toast('נוסף!');
   }
-  inp.value='';toast('נוסף!');
 };
 $('taskInput').onkeydown=e=>{if(e.key==='Enter')$('btnAdd').click();};
 $('lightbox').onclick=e=>{if(e.target===$('lightbox')||e.target.closest('#lb-close'))$('lightbox').classList.remove('open');};
